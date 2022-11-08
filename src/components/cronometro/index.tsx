@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Button } from "../button"
+import { ProgressCircle } from "../progressCircle"
 import { Container, NavButton } from "./styles"
 import { Timer } from "./timer/index"
 
@@ -29,33 +30,50 @@ export function Cronometro({taskDone, selectedTask}:task){
     const [taskType, setTaskType] = useState("Pomodoro")
     const [curTime, setCurTime] = useState(0)
     const [isPaused, setIsPaused] = useState(true)
+    const [initialTimer, setInitialTimer] = useState(0)
     
     useEffect(()=>{
         
-        if(selectedTask?.time && !selectedTask?.isDone){
+        if(selectedTask?.time && taskType === "Pomodoro"){
             setCurTime(convertToSeconds(selectedTask.time))
+            setInitialTimer(getInitialTimer(taskType, selectedTask))
+
         }
     },[selectedTask])
-
+    
     useEffect(()=>{
-        clearTimeout(timerDecreasing.current)
-        if(isPaused)return
+        if(isPaused){
+            clearTimeout(timerDecreasing.current)
+            console.log("entrou")
 
-        if(curTime === 0){
-            if(taskType === "Pomodoro"){
-                taskDone(selectedTask?.id)
-            }
-            // setCurTime(getInitialTimer(taskType, selectedTask))
-            setIsPaused(true)
-            return
         }
-        timerDecreasing.current = window.setTimeout(()=>{
-            function decrease(){
-                setCurTime(curTime - 1)
+        console.log(isPaused)
+    },[isPaused])
+
+    function start(time:number){   
+        setIsPaused(false)
+
+        function decrease(time:number){
+
+            setCurTime(time)
+            
+            if(time === 0){
+                if(taskType === "Pomodoro"){
+                    
+                    taskDone(selectedTask?.id)
+                }
+                setIsPaused(true)
+                return
             }
-            decrease()
-        },1000)
-    },[curTime, isPaused])
+            
+            
+            timerDecreasing.current = window.setTimeout(()=>{
+                
+            decrease(time - 1)
+            },1000)
+        }
+        decrease(time)
+    }
 
     function getInitialTimer(taskType:string, selectedTask:any){
 
@@ -70,9 +88,14 @@ export function Cronometro({taskDone, selectedTask}:task){
         )
     }
 
+    
+
     useEffect(()=>{
         setCurTime(getInitialTimer(taskType, selectedTask))
+        setInitialTimer(getInitialTimer(taskType, selectedTask))
+        setIsPaused(true)
     },[taskType])
+
     return(
         <>
             <Container>
@@ -86,9 +109,13 @@ export function Cronometro({taskDone, selectedTask}:task){
                 current={taskType === "Long Break"}            
                 onClick={evt=>setTaskType(evt.currentTarget.innerText)}>Long Break</NavButton>
                 
-                <Timer time={curTime}/>
+                <ProgressCircle progress={(curTime / initialTimer) * 100}>
+                    <Timer time={curTime}/>
+                </ProgressCircle>
+
+                    
                 {isPaused?
-                    <Button clicked={()=>setIsPaused(false)}>Start</Button>:
+                    <Button clicked={()=>{start(curTime)}}>Start</Button>:
                     <Button clicked={()=>setIsPaused(true)}>Pause</Button>
                 
                 }

@@ -1,6 +1,7 @@
 import styled from "styled-components"
 interface props{
-    isDone:boolean
+    isDone:boolean,
+    isSelected:boolean
 }
 export const TaskItemStyle = styled.li<props>`
     background-color:white;
@@ -11,6 +12,7 @@ export const TaskItemStyle = styled.li<props>`
     background-color:${props=>props.isDone?"green":"white"};
     opacity:${props=>props.isDone?0.7:1};
     pointer-events: ${props=>props.isDone?"none":"auto"};
+    border-left:10px solid ${props=>props.isSelected?"black":"grey"};
     &:hover{
         cursor:pointer;
     }

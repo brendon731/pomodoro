@@ -8,7 +8,8 @@ interface task{
         time:string,
         isDone:boolean,
         amount:number,
-        amountDone:number
+        amountDone:number,
+        isSelected:boolean
     }[]
     handleSelectedElement:Function
 

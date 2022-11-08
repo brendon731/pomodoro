@@ -15,8 +15,13 @@ export const GlobalStyles = createGlobalStyle`
         max-width:500px;
     }
     .newTask{
-        border:2px solid black;
-        padding:2em;
+        border:5px dotted white;
+        color:white;
+        opacity:.7;
+        font-weight:800;
+        font-size:18px;
+        background-color:rgb(0, 0, 0, .2);
+        padding:1.5em;
         max-width:500px;
         box-sizing: border-box;
         text-align: center;
