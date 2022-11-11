@@ -1,5 +1,5 @@
 import React from "react"
-import { TaskItemStyle } from "./styles"
+import { TaskListStyle } from "./styles"
 import { TaskItem } from "./taskItem"
 interface task{
     tasks:{
@@ -16,8 +16,8 @@ interface task{
 }
 export function TaskList({tasks, handleSelectedElement}:task){
     return(
-        <ul>
+        <TaskListStyle>
         {tasks.map(task=><TaskItem key={task.id} task={task} handleSelectedElement={handleSelectedElement}/>)}
-      </ul>
+      </TaskListStyle>
     )
 }

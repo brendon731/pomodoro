@@ -16,7 +16,9 @@ export function TaskItem({ task, handleSelectedElement }: task){
     return(
         <>
         
-        <TaskItemStyle onClick={()=>handleSelectedElement(task.id)} isDone={task.isDone} isSelected={task.isSelected}>
+        <TaskItemStyle 
+        className={task.isDone?"taskDone":undefined}
+        onClick={()=>handleSelectedElement(task.id)} isDone={task.isDone} isSelected={task.isSelected}>
             <div>
                 <strong>{task.title}</strong>
                 <span>{task.time}</span>

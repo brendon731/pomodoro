@@ -1,12 +1,17 @@
 import {createGlobalStyle} from "styled-components"
 
 export const GlobalStyles = createGlobalStyle`
+    :root{
+        --background:rgb(40, 44, 46);
+
+    }
     *{
         font-family:Arial, Helvetica, sans-serif;
     }
     body{
         
         background-color:blueviolet;
+        background-color:var(--background);
     }
     .App{
         min-height:100vh;
@@ -27,6 +32,7 @@ export const GlobalStyles = createGlobalStyle`
         text-align: center;
         cursor:pointer;
     }
+    
     ul{
         padding:0;
         max-width:500px;

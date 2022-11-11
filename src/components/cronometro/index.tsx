@@ -95,6 +95,7 @@ export function Cronometro({taskDone, selectedTask}:task){
         setInitialTimer(getInitialTimer(taskType, selectedTask))
         setIsPaused(true)
     },[taskType])
+    
 
     return(
         <>
@@ -109,7 +110,7 @@ export function Cronometro({taskDone, selectedTask}:task){
                 current={taskType === "Long Break"}            
                 onClick={evt=>setTaskType(evt.currentTarget.innerText)}>Long Break</NavButton>
                 
-                <ProgressCircle progress={(curTime / initialTimer) * 100}>
+                <ProgressCircle progress={100 - (curTime / initialTimer) * 100}>
                     <Timer time={curTime}/>
                 </ProgressCircle>
 

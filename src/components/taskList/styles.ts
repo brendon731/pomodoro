@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export const TaskItemStyle = styled.ul`
+export const TaskListStyle = styled.ul`
     
 
 `
