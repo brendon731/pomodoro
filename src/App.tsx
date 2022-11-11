@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { Cronometro } from './components/cronometro';
 import { TaskList } from "./components/taskList/taskList"
+import {ReactComponent as IncreaseIcon} from "./assets/caret-up.svg"
+import {ReactComponent as DecreaseIcon} from "./assets/caret-down.svg"
 interface task{
   id:number,
   title:string,
@@ -59,15 +61,13 @@ function App() {
       isSelected:false
     }
     ])
+    setAmount(1)
   }
   
   function handleSelectedElement(id:number){
     setCurTask(taskList.filter(task=>task.id===id)[0])
     setTaskList(taskList.map(task=>{return {...task, isSelected:id === task.id}}))
   }
-  
-  
-  
 
   return (
     <div className="App" onClick={()=>setShowForm(false)}>
@@ -76,10 +76,22 @@ function App() {
       {showForm?
         <div onClick={evt=>evt.stopPropagation()}>
           <form onSubmit={handleSubmit}>
-            <input type="text" name="title" onChange={evt=>setTitle(evt.target.value)}/>
-            <input type="number" name="amount" onChange={evt=>setAmount(Number(evt.target.value))}/>
-            <input type="time" name="time" onChange={evt=>setTime(evt.target.value)}/>
-            <button>novo</button>
+            <input type="text" name="title" placeholder="Task Title" onChange={evt=>setTitle(evt.target.value)}/>
+            <div className="amountInputContainer">
+
+            <input type="number" name="amount" min="1" value={amount} placeholder="Quantity of Pomodoro" onChange={evt=>setAmount(Number(evt.target.value))}/>
+            <button className="changeAmount" onClick={evt=>{
+              evt.preventDefault()
+              setAmount(amount + 1)
+            }}>
+              <IncreaseIcon/></button>
+            <button className="changeAmount" onClick={evt=>{
+              evt.preventDefault()
+              setAmount(amount > 1 ? amount - 1 : 1)
+            }}><DecreaseIcon/></button>
+            </div>
+            <input type="time" name="time" placeholder="time "onChange={evt=>setTime(evt.target.value)}/>
+            <input type="submit" value="Add Task"/>
           </form>
         </div>
         :

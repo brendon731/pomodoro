@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Button } from "../button"
 import { ProgressCircle } from "../progressCircle"
+import { TaskNav } from "../taskNav"
 import { Container, NavButton } from "./styles"
 import { Timer } from "./timer/index"
+import {ReactComponent as PauseIcon} from "../../assets/pause.svg"
+import {ReactComponent as PlayIcon} from "../../assets/play.svg"
 
 interface prop{
     taskDone:Function,
@@ -31,7 +34,7 @@ export function Cronometro({taskDone, selectedTask}:task){
     const [curTime, setCurTime] = useState(0)
     const [isPaused, setIsPaused] = useState(true)
     const [initialTimer, setInitialTimer] = useState(0)
-    
+    console.log(PauseIcon)
     useEffect(()=>{
         
         if(selectedTask?.time && taskType === "Pomodoro"){
@@ -99,25 +102,21 @@ export function Cronometro({taskDone, selectedTask}:task){
 
     return(
         <>
+        
             <Container>
-                <NavButton     
-                current={taskType === "Pomodoro"}      
-                onClick={evt=>setTaskType(evt.currentTarget.innerText)}>Pomodoro</NavButton>
-                <NavButton
-                current={taskType === "Short Break"}            
-                onClick={evt=>setTaskType(evt.currentTarget.innerText)}>Short Break</NavButton>
-                <NavButton 
-                current={taskType === "Long Break"}            
-                onClick={evt=>setTaskType(evt.currentTarget.innerText)}>Long Break</NavButton>
-                
+               <TaskNav setTaskType={setTaskType} taskType={taskType}/>
                 <ProgressCircle progress={100 - (curTime / initialTimer) * 100}>
                     <Timer time={curTime}/>
                 </ProgressCircle>
 
                     
                 {isPaused?
-                    <Button clicked={()=>{start(curTime)}}>Start</Button>:
-                    <Button clicked={()=>setIsPaused(true)}>Pause</Button>
+                    <Button clicked={()=>{start(curTime)}}>
+                        <PlayIcon/>
+                        Start</Button>:
+                    <Button clicked={()=>setIsPaused(true)}>
+                        <PauseIcon/>
+                        Pause</Button>
                 
                 }
             </Container>

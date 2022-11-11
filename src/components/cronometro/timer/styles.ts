@@ -5,7 +5,7 @@ export const Clock = styled.div`
     font-size:110px;
     color:white;
     /* border:1px solid black; */
-    color:rgb(199, 199, 199);
+    color:var(--grey);
 
     padding:10px;
     width:fit-content;
