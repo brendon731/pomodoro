@@ -5,5 +5,8 @@ interface Button{
     children:React.ReactNode
 }
 export function Button({clicked, children}:Button){
-    return(<ButtonStyled onClick={clicked}>{children}</ButtonStyled>)
+    return(<ButtonStyled onClick={evt=>{
+        evt.preventDefault()
+        clicked()
+    }}>{children}</ButtonStyled>)
 }

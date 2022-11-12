@@ -7,10 +7,7 @@ import { Timer } from "./timer/index"
 import {ReactComponent as PauseIcon} from "../../assets/pause.svg"
 import {ReactComponent as PlayIcon} from "../../assets/play.svg"
 
-interface prop{
-    taskDone:Function,
-    time:string
-}
+
 interface task{
     taskDone:Function,
     selectedTask:{
@@ -34,7 +31,6 @@ export function Cronometro({taskDone, selectedTask}:task){
     const [curTime, setCurTime] = useState(0)
     const [isPaused, setIsPaused] = useState(true)
     const [initialTimer, setInitialTimer] = useState(0)
-    console.log(PauseIcon)
     useEffect(()=>{
         
         if(selectedTask?.time && taskType === "Pomodoro"){
@@ -47,10 +43,8 @@ export function Cronometro({taskDone, selectedTask}:task){
     useEffect(()=>{
         if(isPaused){
             clearTimeout(timerDecreasing.current)
-            console.log("entrou")
 
         }
-        console.log(isPaused)
     },[isPaused])
 
     function start(time:number){   
