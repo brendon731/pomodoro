@@ -1,23 +1,15 @@
-import React, { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "../button"
 import { ProgressCircle } from "../progressCircle"
 import { TaskNav } from "../taskNav"
-import { Container, NavButton } from "./styles"
 import { Timer } from "./timer/index"
 import {ReactComponent as PauseIcon} from "../../assets/pause.svg"
 import {ReactComponent as PlayIcon} from "../../assets/play.svg"
-
+import { Itask } from "../types/task"
 
 interface task{
     taskDone:Function,
-    selectedTask:{
-        id:number,
-        title:string,
-        time:string,
-        isDone:boolean,
-        amount:number,
-        amountDone:number
-    } | undefined
+    selectedTask:Itask | undefined
   }
 function convertToSeconds(time:string){
     let [minutes=0, seconds=0] = time.split(":")
@@ -38,6 +30,7 @@ export function Cronometro({taskDone, selectedTask}:task){
             setInitialTimer(getInitialTimer(taskType, selectedTask))
 
         }
+        setIsPaused(true)
     },[selectedTask])
     
     useEffect(()=>{
@@ -72,7 +65,7 @@ export function Cronometro({taskDone, selectedTask}:task){
         decrease(time)
     }
 
-    function getInitialTimer(taskType:string, selectedTask:any){
+    function getInitialTimer(taskType:string, selectedTask:Itask | undefined){
 
         if(taskType === "Short Break"){
             return convertToSeconds("00:05")
@@ -95,9 +88,7 @@ export function Cronometro({taskDone, selectedTask}:task){
     
 
     return(
-        <>
-        
-            <Container>
+            <div>
                <TaskNav setTaskType={setTaskType} taskType={taskType}/>
                 <ProgressCircle progress={100 - (curTime / initialTimer) * 100}>
                     <Timer time={curTime}/>
@@ -113,7 +104,6 @@ export function Cronometro({taskDone, selectedTask}:task){
                         Pause</Button>
                 
                 }
-            </Container>
-        </>
+            </div>
     )
 }

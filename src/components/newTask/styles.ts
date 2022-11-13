@@ -6,7 +6,7 @@ export const NewTaskStyle = styled.div`
     border:5px dotted black;
     color:grey;
     font-weight:800;
-    font-size:18px;
+    font-size:1rem;
     background-color:rgb(0, 0, 0, .2);
     padding:1.2em;
     max-width:500px;

@@ -1,23 +1,36 @@
 import React from "react"
-import { TaskListStyle } from "./styles"
-import { TaskItem } from "./taskItem"
+import {TaskListItem} from "./style"
+import {Itask} from "../types/task"
 interface task{
-    tasks:{
-        id:number,
-        title:string,
-        time:string,
-        isDone:boolean,
-        amount:number,
-        amountDone:number,
-        isSelected:boolean
-    }[]
-    handleSelectedElement:Function
+    tasks:Itask[]
+    handleSelectedElement:Function,
+    selectedTask:Itask | undefined,
+    selectTaskToEdit:Function
 
 }
-export function TaskList({tasks, handleSelectedElement}:task){
+export function TaskList({tasks, handleSelectedElement, selectedTask, selectTaskToEdit}:task){
     return(
-        <TaskListStyle>
-        {tasks.map(task=><TaskItem key={task.id} task={task} handleSelectedElement={handleSelectedElement}/>)}
-      </TaskListStyle>
+        <ul>
+        {tasks.map(task=>
+
+        <TaskListItem 
+            key={task.id}
+            className={task.isDone?"taskDone":undefined}
+            onClick={()=>handleSelectedElement(task.id)} isDone={task.isDone} 
+            isSelected={selectedTask?.id === task.id}>
+            <div>
+                <strong>{task.title}</strong>
+                <span>{task.time}</span>
+            </div>
+            <span>{task.amountDone} / {task.amount}</span>
+            <span>
+
+            <span onClick={evt=>{evt.stopPropagation()
+                selectTaskToEdit(task.id)
+                }}>edit</span>
+            </span>
+        </TaskListItem>)}
+      </ul>
     )
 }
+//<TaskItem key={task.id} selectedTask={selectedTask} task={task} handleSelectedElement={handleSelectedElement}/>)}

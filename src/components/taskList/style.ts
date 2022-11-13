@@ -1,21 +1,21 @@
 import styled from "styled-components"
+
 interface props{
     isDone:boolean,
     isSelected:boolean
 }
-export const TaskItemStyle = styled.li<props>`
+export const TaskListItem = styled.li<props>`
     padding:1em;
     margin-bottom:1em;
     display:flex;
     align-items: center;
-    background-color:rgb(223, 223, 223);
+    background-color:var(--list-background);
     opacity:1;
     pointer-events: auto;
-    box-shadow:1px 1px 3px black;
     border-radius:7px;
-    color:black;
+    color:white;
     box-shadow:${prop=>prop.isSelected?
-    "inset 3px 3px 3px black, inset -1px -1px 1px black, 1px 1px 3px black":
+    "inset 3px 3px 3px black, inset -1px -1px 1px black":
     "1px 1px 3px black"};
 
     transition: .2s;

@@ -8,36 +8,62 @@ export const Container = styled.div`
     padding:1em;
     border-radius:15px;
     
-    form input{
-        border-radius:5px;
-        width:50%;
-        min-width:320px;
-        border:none;
-        line-height:2em;
-        background-color: transparent;
-        color:white;
-        padding: 0.5em;
-        font-size:18px;
-        outline: none;
-    }
-    form input:focus{
-        background-color:rgb(0, 0, 0, 0.2);
-    }
-    input[type="number"] {
-    -webkit-appearance: textfield;
-        -moz-appearance: textfield;
-            appearance: textfield;
-    }
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none;
-    }
-    .amountContainer{
-        display:flex;
-        align-items:center;
+    form{
+        span{
+            color:white;
+        }
+        input{
+            border-radius:5px;
+            width:100%;
+            max-width:320px;
+            border:none;
+            line-height:2em;
+            background-color: transparent;
+            color:white;
+            padding: 0.5em;
+            font-size:18px;
+            outline: none;
+        }
+        input[type="submit"]{
+            background-color:black;
+            margin-left:auto;
+            width:fit-content;
+        }
+
+        input:focus{
+            background-color:rgb(0, 0, 0, 0.2);
+        }
+        input[type="number"] {
+        -webkit-appearance: textfield;
+            -moz-appearance: textfield;
+                appearance: textfield;
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none;
+        }
+        .amountContainer{
+            display:flex;
+            align-items:center;
+        }
     }
 `
-
+export const Footer = styled.div`
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top:1em;
+    .deleteButton{
+        color:grey;
+        padding: .5em;
+    }
+    .deleteButton:hover{
+        filter:brightness(1.75);
+        cursor:pointer;
+    }
+    
+   
+`
 export const Button = styled.button`
 
     border:1px solid black;
@@ -52,14 +78,5 @@ export const Button = styled.button`
     display:flex;
     justify-content: center;
     align-items: center;
-    /* svg{
-        width:24px;
-        height:24px;
-        vertical-align: middle;
-    }
-    svg, svg > *{
-        fill: var(--grey);
-        stroke:inherit;
-   } */
-    
+       
 `
