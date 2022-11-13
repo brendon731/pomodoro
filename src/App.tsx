@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { Cronometro } from './components/cronometro';
 import { TaskList } from "./components/taskList/taskList"
-
 import { NewTask } from './components/newTask';
 import { Form } from './components/form';
 import { Itask } from './components/types/task';
+import { TaskListHeader } from './components/taskListHeader';
 
 function App() {
   const [curTask, setCurTask] = useState<Itask>()
@@ -20,6 +20,7 @@ function App() {
     localStorage.setItem("@pomodoro:taskList", JSON.stringify(taskList))
     setCurTask(taskList.filter(task=>task.id === curTask?.id)[0])
   },[taskList])
+  
 
   function taskDone(id:number){
       
@@ -33,7 +34,10 @@ function App() {
       }
       return task
     }))
+    if(curTask && curTask.amountDone + 1 === curTask.amount){
+
       setCurTask(undefined)
+    }
   }
   function handleSubmit(newTask:Itask){
     if(selectedToEdit){
@@ -43,7 +47,7 @@ function App() {
         
         setShowForm(false)
       }else{
-        setTaskList([...taskList, newTask])
+        setTaskList([newTask, ...taskList])
       }
       setSelectedToEdit(undefined)
   }
@@ -52,18 +56,38 @@ function App() {
     setShowForm(true)
   }
   function handleDeleteTask(id:number){
+    if(id === curTask?.id){
+      setCurTask(undefined)
+    }
     setTaskList(taskList.filter(task=>task.id !== id))
     setSelectedToEdit(undefined)
     setShowForm(false)
 
   }
+
   function handleSelectedElement(id:number){
     setCurTask(taskList.filter(task=>task.id===id)[0])
-    // if(id === curTask?.id){
-    //   setCurTask(undefined)
-    // }else{
-    // }
-    // setTaskList(taskList.map(task=>{return {...task, isSelected:id === task.id}}))
+  }
+  function deleteTask(action:string){
+    if(!window.confirm("Are you sure yuo want to delete?"))return
+    switch(action){
+      
+      case "DELETE_ALL_TASK":
+        setTaskList([])
+        return
+
+      case "DELETE_TASK_DONE":
+        setTaskList(taskList.filter(task=>!task.isDone))
+        return
+
+      case "DELETE_TASK_NOT_DONE":
+        setTaskList(taskList.filter(task=>task.isDone))
+        return
+
+      default:
+        return
+
+    }
   }
 
   return (
@@ -76,7 +100,10 @@ function App() {
       
       <Cronometro taskDone={taskDone} selectedTask={curTask}/>
       <div>
-
+      
+        <TaskListHeader
+        deleteTask={deleteTask}
+        />
         {showForm?
           <Form 
           handleDeleteTask={handleDeleteTask}

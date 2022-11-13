@@ -1,6 +1,7 @@
 import React from "react"
 import {TaskListItem} from "./style"
 import {Itask} from "../types/task"
+import {ReactComponent as Edit} from "../../assets/img/note-pencil.svg"
 interface task{
     tasks:Itask[]
     handleSelectedElement:Function,
@@ -18,17 +19,20 @@ export function TaskList({tasks, handleSelectedElement, selectedTask, selectTask
             className={task.isDone?"taskDone":undefined}
             onClick={()=>handleSelectedElement(task.id)} isDone={task.isDone} 
             isSelected={selectedTask?.id === task.id}>
-            <div>
+            <div className="title">
                 <strong>{task.title}</strong>
                 <span>{task.time}</span>
             </div>
-            <span>{task.amountDone} / {task.amount}</span>
-            <span>
-
-            <span onClick={evt=>{evt.stopPropagation()
-                selectTaskToEdit(task.id)
-                }}>edit</span>
-            </span>
+            <div className="iconContainer">
+                <span>{task.amountDone} / {task.amount}</span>
+                <span 
+                className="icon"
+                onClick={evt=>{evt.stopPropagation()
+                    selectTaskToEdit(task.id)
+                }}>
+                    <Edit/>
+                </span>
+            </div>
         </TaskListItem>)}
       </ul>
     )

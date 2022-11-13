@@ -1,17 +1,20 @@
 import { useEffect, useRef, useState } from "react"
 import { Button } from "../button"
-import { ProgressCircle } from "../progressCircle"
-import { TaskNav } from "../taskNav"
+import { ProgressCircle } from "./progressCircle"
+import { TaskNav } from "./taskNav"
 import { Timer } from "./timer/index"
-import {ReactComponent as PauseIcon} from "../../assets/pause.svg"
-import {ReactComponent as PlayIcon} from "../../assets/play.svg"
+import {ReactComponent as PauseIcon} from "../../assets/img/pause.svg"
+import {ReactComponent as PlayIcon} from "../../assets/img/play.svg"
 import { Itask } from "../types/task"
+import sound from "../../assets/audio/alarm-kitchen.mp3"
+
 
 interface task{
     taskDone:Function,
     selectedTask:Itask | undefined
   }
-function convertToSeconds(time:string){
+function convertToSeconds(time:string | undefined){
+    if(!time)return 0
     let [minutes=0, seconds=0] = time.split(":")
     const minutesToSeconds = Number(minutes) * 60
     return minutesToSeconds + Number(seconds)
@@ -23,13 +26,13 @@ export function Cronometro({taskDone, selectedTask}:task){
     const [curTime, setCurTime] = useState(0)
     const [isPaused, setIsPaused] = useState(true)
     const [initialTimer, setInitialTimer] = useState(0)
-    useEffect(()=>{
-        
-        if(selectedTask?.time && taskType === "Pomodoro"){
-            setCurTime(convertToSeconds(selectedTask.time))
-            setInitialTimer(getInitialTimer(taskType, selectedTask))
+    let audio = new Audio(sound)
 
-        }
+    useEffect(()=>{
+        if(taskType !== "Pomodoro")return
+
+        setCurTime(convertToSeconds(selectedTask?.time))
+        setInitialTimer(getInitialTimer(taskType, selectedTask))
         setIsPaused(true)
     },[selectedTask])
     
@@ -49,13 +52,13 @@ export function Cronometro({taskDone, selectedTask}:task){
             
             if(time === 0){
                 if(taskType === "Pomodoro"){
-                    
                     taskDone(selectedTask?.id)
                 }
+                setCurTime(getInitialTimer(taskType, selectedTask))
                 setIsPaused(true)
+                audio.play()
                 return
             }
-            
             
             timerDecreasing.current = window.setTimeout(()=>{
                 
@@ -68,17 +71,15 @@ export function Cronometro({taskDone, selectedTask}:task){
     function getInitialTimer(taskType:string, selectedTask:Itask | undefined){
 
         if(taskType === "Short Break"){
-            return convertToSeconds("00:05")
+            return convertToSeconds("00:03")
 
         }else if(taskType === "Long Break"){
             return convertToSeconds("15:00")
         }
         return convertToSeconds(
-            selectedTask?.isDone?"00:00":selectedTask?.time || "00:00"  
+            selectedTask?.isDone?"00:00":selectedTask?.time 
         )
     }
-
-    
 
     useEffect(()=>{
         setCurTime(getInitialTimer(taskType, selectedTask))
@@ -94,14 +95,19 @@ export function Cronometro({taskDone, selectedTask}:task){
                     <Timer time={curTime}/>
                 </ProgressCircle>
 
-                    
                 {isPaused?
-                    <Button clicked={()=>{start(curTime)}}>
-                        <PlayIcon/>
-                        Start</Button>:
-                    <Button clicked={()=>setIsPaused(true)}>
-                        <PauseIcon/>
-                        Pause</Button>
+                    <Button 
+                        disabled={!!!selectedTask && taskType === "Pomodoro"}
+                        clicked={()=>{start(curTime)}}
+                        ><PlayIcon/>
+                        Start
+                    </Button>:
+                    <Button
+                        disabled={false}
+                        clicked={()=>setIsPaused(true)}
+                        ><PauseIcon/>
+                        Pause
+                    </Button>
                 
                 }
             </div>

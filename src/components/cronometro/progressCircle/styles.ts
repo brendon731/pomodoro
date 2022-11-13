@@ -6,9 +6,7 @@ interface prop{
 export const OutsideDiv = styled.div<prop>`
     border-radius:50%;
     width:100%;
-    max-width:350px;
-    /* width:350px; */
-    /* height:100%; */
+    max-width:320px;
     aspect-ratio:1/1;
     background:conic-gradient(rgb(0, 204, 255), rgb(164, 74, 248) ${prop=>prop.progress || 0}%, black 0%);
     display:flex;

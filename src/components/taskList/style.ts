@@ -5,12 +5,11 @@ interface props{
     isSelected:boolean
 }
 export const TaskListItem = styled.li<props>`
-    padding:1em;
-    margin-bottom:1em;
+    padding:.7em .4em .7em .7em;
+    margin-top:1em;
     display:flex;
     align-items: center;
     background-color:var(--list-background);
-    opacity:1;
     pointer-events: auto;
     border-radius:7px;
     color:white;
@@ -22,27 +21,55 @@ export const TaskListItem = styled.li<props>`
     opacity:${prop=>prop.isSelected?"0.7":"1"};
     
     &.taskDone{
-        background-color:rgb(81, 155, 81);
-        opacity:0.7;
+        background-color:var(--taskDone-background);
+        color:white;
         pointer-events: none;
+        box-shadow:none;
     }
     &:hover{
         cursor:pointer;
     }
-    div{
+    .title{
         display:flex;
         flex-direction: column;
-
+        flex:1;
+        
         strong{
+            color:var(--grey);
             margin-bottom:.3em;
             font-size:18px;
         }
+        span{
+            opacity:.3;
+
+        }
     }
-    & > span{
-        margin-left:auto;
-        font-size:24px;
+    .iconContainer{
+        display:flex;
+        align-items:center;
         font-weight: 700;
-        opacity: .3;
+        font-size:1.1rem;
+
+        span{
+            margin-left:.3em;
+            opacity:.3;
+        }
+       
+        .icon{
+            display:flex;
+            svg{
+                width:32px;
+                height:32px;
+                
+                & > *{
+                    stroke:var(--grey);
+                }
+            }
+            &:hover{
+                opacity:1;
+                
+            }
+        }
     }
 
 `

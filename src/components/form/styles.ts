@@ -28,6 +28,10 @@ export const Container = styled.div`
             background-color:black;
             margin-left:auto;
             width:fit-content;
+            color:var(--grey);
+        }
+        input[type="submit"]:hover{
+            filter:brightness(1.5);
         }
 
         input:focus{
@@ -78,5 +82,12 @@ export const Button = styled.button`
     display:flex;
     justify-content: center;
     align-items: center;
+
+    &:hover{
+        filter:brightness(2);
+    }
+    &:active{
+        opacity:.4;
+    }
        
 `

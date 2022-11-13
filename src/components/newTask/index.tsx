@@ -1,5 +1,5 @@
 
-import {ReactComponent as PlusIcon} from "../../assets/plus.svg"
+import {ReactComponent as PlusIcon} from "../../assets/img/plus.svg"
 import {NewTaskStyle} from "./styles"
 interface prop{
     showForm:boolean, 
@@ -14,7 +14,7 @@ export function NewTask({setShowForm, showForm} : prop){
                 setShowForm(!showForm)
             }}>
             <PlusIcon/>
-            New Task</NewTaskStyle>
+            Add Task</NewTaskStyle>
         
     )
 }

@@ -77,6 +77,7 @@ export function Form({submitForm, selectedToEdit, handleDeleteTask} : prop){
                     }
                     }>Delete</div>
                 }
+                
                 <input type="submit" value="Save"/>
             </Footer>
           </form>

@@ -5,6 +5,7 @@ export const GlobalStyles = createGlobalStyle`
         --background:rgb(40, 44, 46);
         --grey:rgb(199, 199, 199);
         --list-background:rgb(66, 69, 70);
+        --taskDone-background:rgb(72 106 72);
 
     }
     html{
@@ -48,16 +49,17 @@ export const GlobalStyles = createGlobalStyle`
     ul{
         padding:0;
         max-width:500px;
+        margin:0;
     }
     li{
         list-style: none;
     }
     button, input[type="submit"]{
+        border:none;
 
         &:hover, &:focus{
             outline:none;
             cursor:pointer;
-            box-shadow:0px 0px 0px 2px var(--background), 0px 0px 0px 4px black;
         }
 
     }
