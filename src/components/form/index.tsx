@@ -6,6 +6,9 @@ interface prop{
     selectedToEdit:Itask | undefined,
     handleDeleteTask:Function
 }
+function isEmpty(field:string){
+    return !(/\w+/g.test(field))
+}
 export function Form({submitForm, selectedToEdit, handleDeleteTask} : prop){
     
   const [time, setTime] = useState<string>("00:00")
@@ -25,6 +28,7 @@ export function Form({submitForm, selectedToEdit, handleDeleteTask} : prop){
     }
     function handleSubmit(evt:any){
         evt.preventDefault()
+        
         const newTask = 
             {
                 id:selectedToEdit?.id || Date.now(),
@@ -40,10 +44,10 @@ export function Form({submitForm, selectedToEdit, handleDeleteTask} : prop){
     return(
         <Container onClick={evt=>evt.stopPropagation()}>
           <form onSubmit={handleSubmit}>
-            <input type="text" value={title} name="title" placeholder="Task Title" onChange={evt=>setTitle(evt.target.value)}/>
+            <input required type="text" value={title} name="title" placeholder="Task Title" onChange={evt=>setTitle(evt.target.value)}/>
             <div className="amountContainer">
 
-                <input type="number" name="amount" min="1" value={amount} placeholder="Quantity of Pomodoro" onChange={evt=>setAmount(Number(evt.target.value))}/>
+                <input required type="number" name="amount" min="1" value={amount} placeholder="Quantity of Pomodoro" onChange={evt=>setAmount(Number(evt.target.value))}/>
                 <Button
                     onClick={evt=>{
                     evt.preventDefault()
@@ -60,11 +64,9 @@ export function Form({submitForm, selectedToEdit, handleDeleteTask} : prop){
                     &#65291;
 
                 </Button>
-
                 
             </div>
-
-            <input type="time" value={time} name="time" max="50:00" placeholder="time "onChange={evt=>setTime(evt.target.value)}/>
+            <input type="time" step="1"value={time} name="time" min ="00:00:01" placeholder="time "onChange={evt=>setTime(evt.target.value)}/>
             <Footer>
 
                 {
@@ -78,7 +80,7 @@ export function Form({submitForm, selectedToEdit, handleDeleteTask} : prop){
                     }>Delete</div>
                 }
                 
-                <input type="submit" value="Save"/>
+                <input disabled={isEmpty(title)} type="submit" value="Save"/>
             </Footer>
           </form>
         </Container>

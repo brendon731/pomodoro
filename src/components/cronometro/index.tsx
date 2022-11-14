@@ -8,16 +8,16 @@ import {ReactComponent as PlayIcon} from "../../assets/img/play.svg"
 import { Itask } from "../types/task"
 import sound from "../../assets/audio/alarm-kitchen.mp3"
 
-
 interface task{
     taskDone:Function,
     selectedTask:Itask | undefined
   }
 function convertToSeconds(time:string | undefined){
     if(!time)return 0
-    let [minutes=0, seconds=0] = time.split(":")
+    let [hours=0, minutes=0, seconds=0] = time.split(":")
+    const hoursToSeconds = Number(hours) * 3600
     const minutesToSeconds = Number(minutes) * 60
-    return minutesToSeconds + Number(seconds)
+    return hoursToSeconds + minutesToSeconds + Number(seconds)
 }
 
 export function Cronometro({taskDone, selectedTask}:task){
@@ -29,13 +29,11 @@ export function Cronometro({taskDone, selectedTask}:task){
     let audio = new Audio(sound)
 
     useEffect(()=>{
-        if(taskType !== "Pomodoro")return
-
-        setCurTime(convertToSeconds(selectedTask?.time))
-        setInitialTimer(getInitialTimer(taskType, selectedTask))
+        setCurTime(getInitialTimer())
+        setInitialTimer(getInitialTimer())
         setIsPaused(true)
-    },[selectedTask])
-    
+    },[selectedTask, taskType])
+
     useEffect(()=>{
         if(isPaused){
             clearTimeout(timerDecreasing.current)
@@ -47,14 +45,13 @@ export function Cronometro({taskDone, selectedTask}:task){
         setIsPaused(false)
 
         function decrease(time:number){
-
             setCurTime(time)
             
             if(time === 0){
                 if(taskType === "Pomodoro"){
                     taskDone(selectedTask?.id)
                 }
-                setCurTime(getInitialTimer(taskType, selectedTask))
+                setCurTime(getInitialTimer())
                 setIsPaused(true)
                 audio.play()
                 return
@@ -62,31 +59,22 @@ export function Cronometro({taskDone, selectedTask}:task){
             
             timerDecreasing.current = window.setTimeout(()=>{
                 
-            decrease(time - 1)
+                decrease(time - 1)
+
             },1000)
         }
         decrease(time)
     }
-
-    function getInitialTimer(taskType:string, selectedTask:Itask | undefined){
-
-        if(taskType === "Short Break"){
-            return convertToSeconds("00:03")
-
-        }else if(taskType === "Long Break"){
-            return convertToSeconds("15:00")
+    function getInitialTimer(){
+        const times:{[char :string]:string | undefined} = {
+            Short_Break:"00:05:00",
+            Long_Break:"00:15:00",
+            Pomodoro:selectedTask?.isDone?"00:00":selectedTask?.time
         }
-        return convertToSeconds(
-            selectedTask?.isDone?"00:00":selectedTask?.time 
-        )
+        let currentNav = taskType.replaceAll(" ", "_")
+        return convertToSeconds(times[currentNav])
+        
     }
-
-    useEffect(()=>{
-        setCurTime(getInitialTimer(taskType, selectedTask))
-        setInitialTimer(getInitialTimer(taskType, selectedTask))
-        setIsPaused(true)
-    },[taskType])
-    
 
     return(
             <div>

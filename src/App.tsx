@@ -18,7 +18,6 @@ function App() {
 
   useEffect(()=>{
     localStorage.setItem("@pomodoro:taskList", JSON.stringify(taskList))
-    setCurTask(taskList.filter(task=>task.id === curTask?.id)[0])
   },[taskList])
   
 
@@ -48,6 +47,10 @@ function App() {
         setShowForm(false)
       }else{
         setTaskList([newTask, ...taskList])
+      }
+      if(newTask.id === curTask?.id){
+        setCurTask(newTask)
+
       }
       setSelectedToEdit(undefined)
   }
